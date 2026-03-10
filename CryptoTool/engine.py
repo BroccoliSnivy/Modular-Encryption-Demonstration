@@ -1,8 +1,10 @@
 from os import path
+from typing import final
 from cryptography.fernet import Fernet
 
+@final
 class Crypto_demo:
-    def __init__(self, message) -> None:
+    def __init__(self, message : str) -> None:
 
         #Static Variables
         self.secret_key = Fernet.generate_key() #A generated key
@@ -21,7 +23,7 @@ class Crypto_demo:
 
 
     # Execute this function just once
-    def generate_Key_file(self):
+    def generate_Key_file(self) -> None:
         if path.isfile(self.key_file):
             pass
         else:
@@ -29,20 +31,20 @@ class Crypto_demo:
                 Kfile.write(self.secret_key)
 
 
-    def load_key(self):
+    def load_key(self) -> bytes:
         return open(self.key_file, "rb").read()
 
-    def encrypt_message(self):
+    def encrypt_message(self) -> bytes:
         #Encrypting the Text after encoding (encoding is mandatory)
         encrypted_message = self.fobj.encrypt(self.encoded_message)
         return encrypted_message
 
-    def decrypt_message(self):
+    def decrypt_message(self) -> str :
         #Decrypting the Text and decoding before returning 
         decrypted_message = self.fobj.decrypt(self.encrypted_message)
         return decrypted_message.decode()
 
-    def run(self):
+    def run(self) -> None:
         # self.generate_Key_file()
         print(f"Original message : {self.text_message}\n")
         print(f"Encrypted message : {self.encrypted_message}\n")
@@ -50,6 +52,7 @@ class Crypto_demo:
         assert self.text_message == self.decrypted_message
     
 
-if __name__=="__main__":
-    crypto = Crypto_demo("This is the encrypted text")
-    crypto.run()
+# if __name__=="__main__":
+#     message = input("Enter your message : ")
+#     crypto = Crypto_demo(message)
+#     crypto.run()
